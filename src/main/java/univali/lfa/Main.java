@@ -1,27 +1,17 @@
 package univali.lfa;
 
-import br.univali.santiago.WebSearch;
+import univali.lfa.web.WebSearch;
 import univali.lfa.core.DeterministicFiniteAutomaton;
 import univali.lfa.core.Node;
-import univali.lfa.core.Transition;
-import univali.lfa.enums.Alphabet;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    /*
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        //instancia e usa objeto que captura código-fonte de páginas Web
-        WebSearch webSearch = new WebSearch();
-        webSearch.getListaRecursos().add("https://raw.githubusercontent.com/rndinfosecguy/pastePasswordLists/refs/heads/main/pastebin.com/top1000000.lst");
-        ArrayList<String> codeList = webSearch.carregarRecursos();
-
-        String pageText = codeList.getFirst();
+    public static void main(String[] args) throws IOException {
+        WebSearch webSearch = getWebSearchLib();
 
         DeterministicFiniteAutomaton dfa = new DeterministicFiniteAutomaton();
 
@@ -62,10 +52,30 @@ public class Main {
         q14.buildTransitions(q15, q14, q14, q14);
         q15.buildTransitions(q15, q15, q15, q15);
 
-        List<String> result = dfa.searchForWords(pageText);
+        List<String> fetchedPages = webSearch.fetchResources();
+        for (int i = 0; i < fetchedPages.size(); i++) {
+            String url = webSearch.getResourceUrls().get(i);
+            String pageText = fetchedPages.get(i);
 
-        for (String s : result) {
-            System.out.println(s);
+            List<String> result = dfa.searchForWords(pageText);
+
+            System.out.println("----------------------------------------------------");
+            System.out.println("Words found in the text of the searched URL ("+ url + "):");
+
+            for (String s : result) {
+                System.out.println("\"" + s + "\"");
+            }
         }
+    }
+
+    private static WebSearch getWebSearchLib() {
+        WebSearch webSearch = new WebSearch();
+
+        webSearch.addResourceUrl("https://raw.githubusercontent.com/rndinfosecguy/pastePasswordLists/refs/heads/main/pastebin.com/top10.lst");
+        webSearch.addResourceUrl("https://raw.githubusercontent.com/rndinfosecguy/pastePasswordLists/refs/heads/main/pastebin.com/top100.lst");
+        webSearch.addResourceUrl("https://raw.githubusercontent.com/rndinfosecguy/pastePasswordLists/refs/heads/main/pastebin.com/top1000.lst");
+        webSearch.addResourceUrl("https://raw.githubusercontent.com/rndinfosecguy/pastePasswordLists/refs/heads/main/pastebin.com/top10000.lst");
+
+        return webSearch;
     }
 }

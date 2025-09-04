@@ -11,10 +11,6 @@ public class Node {
     int id;
     List<Transition> transitions = new ArrayList<>();
 
-    public Node(int id) {
-        this.id = id;
-    }
-
     public Node(int id, DeterministicFiniteAutomaton dfa) {
         this.id = id;
         dfa.appendNode(this);
