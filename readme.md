@@ -1,7 +1,7 @@
 # regex-dfa-search
 
 A Java-based simulator for **Deterministic Finite Automata (DFA)** with state transitions.  
-Now also fetches **web pages by URL** and scans their text for **words accepted by the DFA**.
+Also fetches **web pages by URL** and scans their text for **words accepted by the DFA**.
 
 ---
 
@@ -17,7 +17,6 @@ Now also fetches **web pages by URL** and scans their text for **words accepted 
 - **Fetches a URL, extracts text, and reports matching words**.
 - Easy to extend with new alphabets, states, and strategies.
 - Built with **Java 21+** and **Maven**.
-
 
 ---
 
